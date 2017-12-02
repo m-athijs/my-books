@@ -2,6 +2,7 @@
 
   <require from="./book-list"></require>
   <require from="./heading.html"></require>
+  <require from="./book-stats"></require>
 
   <heading text.bind="'books'"></heading>
 
@@ -10,7 +11,7 @@
         <form class="form-inline" submit.trigger="addBook()">
             <label for="book-title"></label>
             <input class="form-control" type="text" value.bind="bookTitle" id="book-title" placeholder="book title...">
-            <input class="btn btn-success tap-right" type="submit" value="add">
+            <input class="btn btn-success tap-right" type="submit" value="add" disabled.one-way="canAdd">
           </form>        
     </div>
   </div>
@@ -18,5 +19,7 @@
   <hr />
 
   <book-list books.bind="books"></book-list>
+
+  <!-- <book-stats if.bind="books.length > 0" books.bind="books" original-number-of-books.one-time="books.length"></book-stats> -->
 
 </template>
