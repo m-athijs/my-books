@@ -10,8 +10,16 @@
     <div class="card-block">
         <form class="form-inline" submit.trigger="addBook()">
             <label for="book-title"></label>
-            <input class="form-control" type="text" value.bind="bookTitle" id="book-title" placeholder="book title...">
-            <input class="btn btn-success tap-right" type="submit" value="add" disabled.one-way="canAdd">
+            <input class="form-control" 
+              blur.trigger="refreshSignal()"
+              type="text" 
+              value.bind="bookTitle" 
+              id="book-title" 
+              placeholder="book title...">
+            <input class="btn btn-success tap-right" 
+              type="submit" 
+              value="add" 
+              disabled.bind="canAdd() & signal:'can-add-signal'">
           </form>        
     </div>
   </div>
