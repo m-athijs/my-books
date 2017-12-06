@@ -1,39 +1,26 @@
-import {inject, observable} from 'aurelia-framework';
-import {BindingSignaler} from 'aurelia-templating-resources';
+import {bindable, inject, computedFrom} from 'aurelia-framework';
 import {BookApi} from '../../services/book-api';
 
-@inject(BookApi, BindingSignaler)
+@inject(BookApi)
 export class Books {
 
-  @observable bookTitle = '';
-
-  constructor(bookApi, bindingSignaler) {
+  constructor(bookApi){
+    this.bookTitle = ""; 
     this.books = [];
     this.bookApi = bookApi;
-    this.bindingSignaler = bindingSignaler;
+  }
+  
+  addBook () {
+    this.books.push({title : this.bookTitle});
+    this.bookTitle = "";
+  }
+  
+  bind(){
+    this.bookApi.getBooks().then(savedBooks => this.books = savedBooks);
   }
 
-  addBook() {
-    this.books.push({title: this.bookTitle});
-    this.bookTitle = '';
+  @computedFrom('bookTitle.length') 
+  get canAdd(){
+      return this.bookTitle.length === 0;
   }
-
-  bind() {
-    this.bookApi.getBooks().then(savedBooks => {
-      this.books = savedBooks;
-    })
-  }
-
-  canAdd() {
-    return this.bookTitle.length === 0;
-  }
-
-  refreshSignal() {
-    this.bindingSignaler.signal('can-add-signal');
-  }
-
-  bookTitleChanged(newValue, oldValue) {
-    console.log(`Book title changed, Old value: ${oldValue}, New value: ${newValue}`);
-  }
-
 }
